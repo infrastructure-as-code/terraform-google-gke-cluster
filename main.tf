@@ -60,13 +60,6 @@ resource "google_container_cluster" "primary" {
     http_load_balancing {
       disabled = false
     }
-    cloudrun_config {
-      disabled = false
-    }
-    istio_config {
-      disabled = false
-      auth     = "AUTH_MUTUAL_TLS"
-    }
   }
 
   maintenance_policy {
