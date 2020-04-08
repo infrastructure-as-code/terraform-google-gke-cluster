@@ -9,7 +9,7 @@ module "k8s" {
   name         = "gke-cluster-example"
   location     = "us-central1-a"
   cluster_type = "zonal"
-  k8s_version  = "1.14.10-gke.22"
+  k8s_version  = "1.15.9-gke.24"
   project_id   = "forever-project"
 
   remove_default_node_pool = false
@@ -24,4 +24,17 @@ module "k8s" {
   providers = {
     google = google-beta.google_beta
   }
+}
+
+resource "null_resource" "kubeconfig" {
+  provisioner "local-exec" {
+    command = "gcloud beta container clusters get-credentials gke-cluster-1 --zone us-central1-a --project forever-project"
+  }
+  depends_on = [
+    module.k8s
+  ]
+}
+
+output "configure_kubectl" {
+  value = module.k8s.configure_kubectl
 }
